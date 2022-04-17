@@ -1,0 +1,6 @@
+Flask_SocketIO==5.1.1
+Flask==1.1.2
+Flask-Session==0.3.2
+itsdangerous==2.0.1
+werkzeug==2.0.3
+pandas

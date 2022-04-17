@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Mychat App</title>
+  <!--Link to CSS -->
+  <link href="../static/bootstrap.min.css" rel="stylesheet">
+  <link href="../static/stylemain.css" rel="stylesheet">
+</head>
+
+
+
+<body class="text-center">
+  
+  <form class="form-signin" action="{{url_for('main')}}" method="POST">
+    {% with messages = get_flashed_messages() %}  
+        {% if messages %}  
+            {% for message in messages %}  
+                 <p>{{ message }}</p>  
+           {% endfor %}  
+        {% endif %}  
+    {% endwith %}
+    <h class="h2 mb-3 font-weight-normal">Welcome to MyChat App</h><br><br>
+    <button class="btn btn-lg btn-primary btn-block" value="submit" formaction="{{url_for('main')}}">Existing User</button>
+    <button class="btn btn-lg btn-primary btn-block" value="submit" formaction="{{url_for('adduserpage')}}">Password Reset</button>
+    <button class="btn btn-lg btn-primary btn-block" value="submit" formaction="{{url_for('admin')}}">Admin</button>
+  </form>
+  
+</body>
+
+</html>

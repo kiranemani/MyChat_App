@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>MyChat App</title>
+  <!--Link to CSS -->
+  <link href="../static/bootstrap.min.css" rel="stylesheet">
+  <link href="../static/style.css" rel="stylesheet">
+</head>
+
+<body class="text-center">
+  <form class="form-signin" action="{{url_for('adduserdetails')}}" method="POST">
+    {% with messages = get_flashed_messages() %}  
+        {% if messages %}  
+            {% for message in messages %}  
+                 <p>{{ message }}</p>  
+           {% endfor %}  
+        {% endif %}  
+    {% endwith %}
+    <h1 class="h2 mb-3 font-weight-normal">MyChat App</h1><br><br>
+    <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus><br>
+    <input type="password" id="password" name="password" class="form-control" placeholder="New Password" required autofocus><br>
+    <input type="text" id="emaniid" name="emailid" class="form-control" placeholder="New EmailId" required><br>
+    <button class="btn btn-lg btn-primary btn-block" value="submit">Update Details</button>
+  </form>
+</body>
+</html>

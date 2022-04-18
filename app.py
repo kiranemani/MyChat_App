@@ -36,16 +36,17 @@ def adduserdetails():
     username = request.form['username']
     password = request.form['password']
     emaniId = request.form['emailid']
-    data = pd.read_csv(r'E:\Flask\Chat-App\templates\Login.csv')
+    data = pd.read_csv(r'E:\Flask\Chat-App\templates\Login.csv',usecols=["UserName","EmailId","Password","UserType"])
     if username not in data['UserName'].values:
         flash("User not exists, please ask admin to create")  
         return render_template('adduserpage.html')
     data.set_index('UserName',inplace = True)
+    Type = data.loc[username,'UserType'] 
     data.drop([username],inplace= True)
-    dictionary_row = {"UserName":username,"EmailId":emaniId,"Password":password}
+    dictionary_row = {"UserName":username,"EmailId":emaniId,"Password":password, "UserType":Type}
     data.reset_index(inplace = True)
     data = data.append(dictionary_row, ignore_index=True)
-    #data.set_index('UserName',inplace = True)
+    data.set_index('UserName',inplace = True)
     data.to_csv(r'E:\Flask\Chat-App\templates\Login.csv')
     flash("Details updated successfuly")  
     return render_template('index.html')  
@@ -54,19 +55,14 @@ def adduserdetails():
 def adminuser():
     username = request.form['username']
     password = request.form['password']
-    data = pd.read_csv(r'E:\Flask\Chat-App\templates\Login.csv')
-    print(" dfffff ", username, data)
+    data = pd.read_csv(r'E:\Flask\Chat-App\templates\Login.csv',usecols=["UserName","EmailId","Password","UserType"])
     #data.set_index('UserName', inplace=True)
     if username not in data['UserName'].values:
-        print("dfffff11")
         flash("Please enter valid UserName ")  
         return render_template('admin.html')  
-    print("dfffff1..1")   
     #data = pd.read_csv(r'E:\Flask\Chat-App\templates\Login.csv')
-    print("dff", data)
     data.set_index('UserName', inplace=True)
     if not data.loc[username,'UserType'] == 'Admin':
-        print("username", username)
         flash("Given User doesn't have Admin rights")  
         return render_template('admin.html')  
     if not data.loc[username,'Password'] == password:
@@ -78,9 +74,7 @@ def adminuser():
 @app.route('/Userlist', methods=['GET', 'POST'])
 def Userlist():
     data = pd.read_csv(r'E:\Flask\Chat-App\templates\Login.csv', usecols=['UserName','EmailId','UserType'])
-    print(" dfffff ", data)
     lt = data.values.tolist()
-    print(lt)
     return render_template('userlist.html', lt = lt)
 
 @app.route('/AddUser', methods=['GET', 'POST'])
@@ -92,8 +86,7 @@ def AddUser():
     if not username.strip():
         flash("Please Enter vaild username")  
         return render_template('userrights.html')      
-    data = pd.read_csv(r'E:\Flask\Chat-App\templates\Login.csv')
-    print(" dfffff ", username, data)
+    data = pd.read_csv(r'E:\Flask\Chat-App\templates\Login.csv',usecols=["UserName","EmailId","Password","UserType"])
     if username in data['UserName'].values:
         flash("User already exsits, Please enter valid UserName ")  
         return render_template('userrights.html') 
@@ -114,7 +107,7 @@ def RemoveUser():
         flash("Please Enter vaild username")  
         return render_template('userrights.html')      
     
-    data = pd.read_csv(r'E:\Flask\Chat-App\templates\Login.csv')
+    data = pd.read_csv(r'E:\Flask\Chat-App\templates\Login.csv',usecols=["UserName","EmailId","Password","UserType"])
     if username not in data['UserName'].values:
         flash("User does not exsits, Please enter valid UserName ")  
         return render_template('userrights.html') 
@@ -132,7 +125,10 @@ def chat():
         username = request.form['username']
         room = request.form['room']
         password = request.form['password']
-        data = pd.read_csv(r'E:\Flask\Chat-App\templates\Login.csv')
+        data = pd.read_csv(r'E:\Flask\Chat-App\templates\Login.csv',usecols=["UserName","EmailId","Password","UserType"])
+        if username not in data['UserName'].values:
+            flash("Please enter valid UserName ")  
+            return render_template('main.html')
         
         data.set_index('UserName', inplace=True)
         if data.loc[username,'Password'] == password:

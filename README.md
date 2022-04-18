@@ -6,3 +6,4 @@ When Admin creats a user, he/she creats a user with password and emailId with 'D
 
 User should change the details on his first login, other wise it will not allow the user into chat room.
 
+Instead of Database, I have used csv file to store the data and pandas to manage data. 
